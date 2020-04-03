@@ -42,6 +42,9 @@ var player_opacity;
 
 var theta = 0;
 
+var coin_sound_effect;
+var death_sound_effect;
+
 function test () {
   console.log(countdown);
 }
@@ -62,6 +65,10 @@ function setup () {
   game_won = false;
 
   player_opacity = 0;
+
+	coin_sound_effect = loadSound("coin-sound-effect.mp3");
+	death_sound_effect = loadSound("death-sound-effect5.mp3");
+	death_sound_effect.setVolume(1);
 
   player = {x:5,y:140,w:30,h:30};
 
@@ -514,6 +521,7 @@ function do_player () {
       if (current_level == parseInt(i)+1) {
         if (enemy_collision(player,each_enemy)) {
           restart_game();
+					death_sound_effect.play();
           countdown = 60;
           countdown_bool = true;
           player_opacity = 0;
@@ -589,6 +597,7 @@ function do_coins () {
 
       if (collision(each_coin, player)) {
         each_coin.collected = true;
+				coin_sound_effect.play();
         collected_coins += 1;
         each_coin.y += 500;
       }
@@ -602,6 +611,7 @@ function do_coins () {
 
       if (collision(each_coin, player)) {
         each_coin.collected = true;
+				coin_sound_effect.play();
         collected_coins += 1;
         each_coin.y += 500;
       }
@@ -615,6 +625,7 @@ function do_coins () {
 
       if (collision(each_coin, player)) {
         each_coin.collected = true;
+				coin_sound_effect.play();
         collected_coins += 1;
         each_coin.y += 500;
       }
@@ -628,6 +639,7 @@ function do_coins () {
 
       if (collision(each_coin, player)) {
         each_coin.collected = true;
+				coin_sound_effect.play();
         collected_coins += 1;
         each_coin.y += 500;
       }
@@ -641,6 +653,7 @@ function do_coins () {
 
       if (collision(each_coin, player)) {
         each_coin.collected = true;
+				coin_sound_effect.play();
         collected_coins += 1;
         each_coin.y += 500;
       }
@@ -654,6 +667,7 @@ function do_coins () {
 
       if (collision(each_coin, player)) {
         each_coin.collected = true;
+				coin_sound_effect.play();
         collected_coins += 1;
         each_coin.y += 500;
       }
@@ -667,6 +681,7 @@ function do_coins () {
 
       if (collision(each_coin, player)) {
         each_coin.collected = true;
+				coin_sound_effect.play();
         collected_coins += 1;
         each_coin.y += 500;
       }
