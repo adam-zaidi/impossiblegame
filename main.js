@@ -44,6 +44,7 @@ var theta = 0;
 
 var coin_sound_effect;
 var death_sound_effect;
+var beat_level_sound_effect;
 
 function test () {
   console.log(countdown);
@@ -52,7 +53,7 @@ function test () {
 function setup () {
   createCanvas(480,360);
 
-  background = loadImage("background.png");
+  background = loadImage("data/background.png");
   lives = 0;
   current_level = 1;
 
@@ -66,9 +67,10 @@ function setup () {
 
   player_opacity = 0;
 
-	coin_sound_effect = loadSound("coin-sound-effect.mp3");
-	death_sound_effect = loadSound("death-sound-effect5.mp3");
+	coin_sound_effect = loadSound("data/coin-sound-effect2.mp3");
+	death_sound_effect = loadSound("data/death-sound-effect5.mp3");
 	death_sound_effect.setVolume(1);
+	beat_level_sound_effect = loadSound("data/beat-level-sound-effect2.mp3");
 
   player = {x:5,y:140,w:30,h:30};
 
@@ -534,6 +536,7 @@ function do_player () {
   for (var each_coin_set of coins) {
     if (in_endzone(player) && collected_coins == each_coin_set.length && coins.indexOf(each_coin_set)+1 == current_level) {
       current_level += 1;
+			beat_level_sound_effect.play();
       player = {x:5,y:140,w:30,h:30};
       collected_coins = 0;
       player_opacity = 0;
@@ -588,21 +591,25 @@ function draw_endzones () {
 
 function do_coins () {
   ellipseMode(CENTER);
-  if (current_level == 1) {
-    for (each_coin of coins_level_1) {
-      if (!each_coin.collected) {
-        fill(255,255,0);
-        ellipse(each_coin.x, each_coin.y, each_coin.w, each_coin.h);
-      }
+  // if (current_level == 1) {
+		for (var i = 0; i < 7; i++) {
+			if (current_level == i+1) {
+				for (each_coin of coins[i]) {
+					if (!each_coin.collected) {
+						fill(255,255,0);
+						ellipse(each_coin.x, each_coin.y, each_coin.w, each_coin.h);
+					}
 
-      if (collision(each_coin, player)) {
-        each_coin.collected = true;
-				coin_sound_effect.play();
-        collected_coins += 1;
-        each_coin.y += 500;
-      }
-    }
-  } else if (current_level == 2) {
+					if (collision(each_coin, player)) {
+						each_coin.collected = true;
+						coin_sound_effect.play();
+						collected_coins += 1;
+						each_coin.y += 500;
+					}
+				}
+			}
+		}
+  /*} else if (current_level == 2) {
     for (each_coin of coins_level_2) {
       if (!each_coin.collected) {
         fill(255,255,0);
@@ -686,7 +693,7 @@ function do_coins () {
         each_coin.y += 500;
       }
     }
-  }
+  }*/
 }
 
 function restart_game () {
@@ -735,29 +742,3 @@ function move_obj (obj,new_x,new_y,time) {
     obj.x_vl = (new_x - obj.x)/time;
     obj.y_vl = (new_y - obj.y)/time;
 };
-
-function collision (obj1, obj2) {
-    if (obj1.x < obj2.x + obj2.w &&
-        obj1.x + obj1.w > obj2.x &&
-        obj1.y < obj2.y + obj2.h &&
-        obj1.y + obj1.h > obj2.y) {
-        return true;
-    } else {
-        return false;
-    }
-}
-
-function enemy_collision (obj1, obj2) {
-  var circleDistanceX = Math.abs(obj2.x - obj1.x);
-  var circleDistanceY = Math.abs(obj2.y - obj1.y);
-
-  if (circleDistanceX > (obj1.w/2 + obj2.w/2)) { return false; }
-  if (circleDistanceY > (obj1.h/2 + obj2.w/2)) { return false; }
-
-  if (circleDistanceX <= (obj1.w/2)) { return true; } 
-  if (circleDistanceY <= (obj1.h/2)) { return true; }
-
-  cornerDistance_sq = (circleDistanceX - rect.w/2)^2 + (circleDistanceY - rect.h/2)^2;
-
-  return (cornerDistance_sq <= ((circle.w/2)^2));
-}
