@@ -46,215 +46,6 @@ var coin_sound_effect;
 var death_sound_effect;
 var beat_level_sound_effect;
 
-function test () {
-  console.log(countdown);
-}
-
-function setup () {
-  createCanvas(480,360);
-
-  background = loadImage("data/background.png");
-  lives = 0;
-  current_level = 1;
-
-  collected_coins = 0;
-  countdown = 60;
-  countdown_bool = false;
-
-  counter = 0;
-
-  game_won = false;
-
-  player_opacity = 0;
-
-	coin_sound_effect = loadSound("data/coin-sound-effect2.mp3");
-	death_sound_effect = loadSound("data/death-sound-effect5.mp3");
-	death_sound_effect.setVolume(1);
-	beat_level_sound_effect = loadSound("data/beat-level-sound-effect2.mp3");
-
-  player = {x:5,y:140,w:30,h:30};
-
-  enemies_level_1 = [{x: 184, y: 105, w: 30, h: 30, vl: 3},
-                     {x: 269, y: 105, w: 30, h: 30, vl: 3},
-                     {x: 354, y: 105, w: 30, h: 30, vl: 3}];
-  
-  enemies_level_2 = [{x: 55, y: 105, w: 30, h: 30, vl: 3},
-                     {x: 395, y: 145, w: 30, h: 30, vl: 3},
-                     {x: 55, y: 185, w: 30, h: 30, vl: 3},
-                     {x: 395, y: 230, w: 30, h: 30, vl: 3}];
-  
-  enemies_level_3 = [{x: 55, y: 105, w: 30, h: 30, x_vl: 0, y_vl: 0},
-                     {x: 397, y: 230, w: 30, h: 30, x_vl: 0, y_vl: 0},
-                     {x: 55, y: 230, w: 30, h: 30, x_vl: 0, y_vl: 0},
-                     {x: 397, y: 105, w: 30, h: 30, x_vl: 0, y_vl: 0}];
-
-  enemies_level_4 = [
-                     {x: 97, y: 105, w: 30, h: 30, vl: 3, or: "hor"},
-                     {x: 140, y: 105, w: 30, h: 30, vl: 3, or: "hor"},
-                     {x: 185, y: 105, w: 30, h: 30, vl: 3, or: "hor"},
-
-                     {x: 312, y: 105, w: 30, h: 30, vl: 3, or: "hor"},
-                     {x: 354, y: 105, w: 30, h: 30, vl: 3, or: "hor"},
-                     {x: 397, y: 105, w: 30, h: 30, vl: 3, or: "hor"},
-
-                     {x: 395, y: 147, w: 30, h: 30, vl: 3, or: "vert"},
-                     {x: 395, y: 189, w: 30, h: 30, vl: 3, or: "vert"},
-                     {x: 395, y: 230, w: 30, h: 30, vl: 3, or: "vert"},
-
-                     {x: 355, y: 230, w: 30, h: 30, vl: -3, or: "hor"},
-                     {x: 310, y: 230, w: 30, h: 30, vl: -3, or: "hor"},
-                     {x: 268, y: 230, w: 30, h: 30, vl: -3, or: "hor"},
-                     {x: 225, y: 230, w: 30, h: 30, vl: -3, or: "hor"},
-                     {x: 183, y: 230, w: 30, h: 30, vl: -3, or: "hor"},
-                     {x: 140, y: 230, w: 30, h: 30, vl: -3, or: "hor"},
-                     {x: 98, y: 230, w: 30, h: 30, vl: -3, or: "hor"},
-                     {x: 55, y: 230, w: 30, h: 30, vl: -3, or: "vert"},
-                     
-                     {x: 55, y: 188, w: 30, h: 30, vl: -3, or: "vert"},
-                     {x: 55, y: 146, w: 30, h: 30, vl: -3, or: "vert"},
-                     {x: 55, y: 105, w: 30, h: 30, vl: 3, or: "hor"},
-  ];
-
-  enemies_level_5 = [
-                     {x: 98, y: 105, w: 30, h: 30, vl: 3},
-                     {x: 140, y: 235, w: 30, h: 30, vl: 3},
-                     {x: 183, y: 105, w: 30, h: 30, vl: 3},
-                     {x: 225, y: 235, w: 30, h: 30, vl: 3},
-                     {x: 268, y: 105, w: 30, h: 30, vl: 3},
-                     {x: 311, y: 235, w: 30, h: 30, vl: 3},
-                     {x: 353, y: 105, w: 30, h: 30, vl: 3},
-  ];
-  enemies_level_6 = [
-                     {x: 55, y: 105, w: 30, h: 30, vl: 3},
-                     {x: 220, y: 146, w: 30, h: 30, vl: -3},
-                     {x: 55, y: 188, w: 30, h: 30, vl: 3},
-                     {x: 220, y: 230, w: 30, h: 30, vl: -3},
-
-                     {x: 230, y: 105, w: 30, h: 30, vl: 3},
-                     {x: 395, y: 146, w: 30, h: 30, vl: -3},
-                     {x: 230, y: 188, w: 30, h: 30, vl: 3},
-                     {x: 395, y: 230, w: 30, h: 30, vl: -3},
-  ];
-
-  enemies_level_7 = [
-                     {x: 98, y: 167, w: 30, h: 30},
-                     {x: 183, y: 167, w: 30, h: 30},
-                     {x: 140, y: 209, w: 30, h: 30},
-                     {x: 140, y: 125, w: 30, h: 30},
-                     {x: 98, y: 167, w: 30, h: 30},
-                     {x: 183, y: 167, w: 30, h: 30},
-                     {x: 140, y: 209, w: 30, h: 30},
-                     {x: 140, y: 125, w: 30, h: 30},
-                     {x: 140, y: 167, w: 30, h: 30},
-
-                     {x: 98, y: 167, w: 30, h: 30},
-                     {x: 183, y: 167, w: 30, h: 30},
-                     {x: 140, y: 209, w: 30, h: 30},
-                     {x: 140, y: 125, w: 30, h: 30},
-                     {x: 98, y: 167, w: 30, h: 30},
-                     {x: 183, y: 167, w: 30, h: 30},
-                     {x: 140, y: 209, w: 30, h: 30},
-                     {x: 140, y: 125, w: 30, h: 30},
-                     {x: 330, y: 167, w: 30, h: 30},
-  ];
-
-  enemies = [enemies_level_1, enemies_level_2, enemies_level_3,enemies_level_4,enemies_level_5,enemies_level_6,enemies_level_7];
-
-  coins_level_1 = [{x: 156, y: 201, w: 15, h: 15, collected: false},
-                  {x: 240, y: 161, w: 15, h: 15, collected: false},
-                  {x: 326, y: 201, w: 15, h: 15, collected: false},
-                  {x: 410, y: 161, w: 15, h: 15, collected: false}];
-
-  coins_level_2 = [{x: 285, y: 120, w: 15, h: 15, collected: false},
-                   {x: 200, y: 160, w: 15, h: 15, collected: false},
-                   {x: 285, y: 200, w: 15, h: 15, collected: false},
-                   {x: 200, y: 245, w: 15, h: 15, collected: false}];
-  
-  coins_level_5 = [{x: 112, y: 182, w: 15, h: 15, collected: false},
-                   {x: 155, y: 182, w: 15, h: 15, collected: false},
-                   {x: 200, y: 182, w: 15, h: 15, collected: false},
-                   {x: 240, y: 182, w: 15, h: 15, collected: false},
-                   {x: 280, y: 182, w: 15, h: 15, collected: false},
-                   {x: 323, y: 182, w: 15, h: 15, collected: false},
-                   {x: 368, y: 182, w: 15, h: 15, collected: false}];
-
-  coins_level_4 = [  {x: 117, y: 125, w: 15, h: 15, collected: false},
-                     {x: 160, y: 125, w: 15, h: 15, collected: false},
-                     {x: 205, y: 125, w: 15, h: 15, collected: false},
-
-                     {x: 327, y: 125, w: 15, h: 15, collected: false},
-                     {x: 368, y: 125, w: 15, h: 15, collected: false},
-                     {x: 415, y: 125, w: 15, h: 15, collected: false},
-
-                     {x: 415, y: 167, w: 15, h: 15, collected: false},
-                     {x: 415, y: 209, w: 15, h: 15, collected: false},
-                     {x: 415, y: 250, w: 15, h: 15, collected: false},
-
-                     {x: 375, y: 250, w: 15, h: 15, collected: false},
-                     {x: 330, y: 250, w: 15, h: 15, collected: false},
-                     {x: 288, y: 250, w: 15, h: 15, collected: false},
-                     {x: 245, y: 250, w: 15, h: 15, collected: false},
-                     {x: 203, y: 250, w: 15, h: 15, collected: false},
-                     {x: 160, y: 250, w: 15, h: 15, collected: false},
-                     {x: 118, y: 250, w: 15, h: 15, collected: false},
-                     {x: 75, y: 250, w: 15, h: 15, collected: false},
-                     
-                     {x: 75, y: 208, w: 15, h: 15, vl: -3, or: "vert"},
-                     {x: 75, y: 166, w: 15, h: 15, vl: -3, or: "vert"},
-                     {x: 75, y: 125, w: 15, h: 15, vl: 3, or: "hor"}];
-
-  coins_level_6 = [
-                     {x: 240, y: 120, w: 15, h: 15, collected: false},
-                     {x: 240, y: 160, w: 15, h: 15, collected: false},
-                     {x: 240, y: 200, w: 15, h: 15, collected: false},
-                     {x: 240, y: 245, w: 15, h: 15, collected: false},
-  ];
-
-  coins_level_3 = [
-                     {x: 240, y: 120, w: 15, h: 15, collected: false},
-                     {x: 240, y: 160, w: 15, h: 15, collected: false},
-                     {x: 240, y: 200, w: 15, h: 15, collected: false},
-                     {x: 240, y: 245, w: 15, h: 15, collected: false},
-  ];
-
-  coins_level_7 = [
-                     {x: 90, y: 182, w: 15, h: 15},
-                     {x: 220, y: 182, w: 15, h: 15},
-                     {x: 157, y: 245, w: 15, h: 15},
-                     {x: 157, y: 120, w: 15, h: 15},
-
-                     {x: 280, y: 182, w: 15, h: 15},
-                     {x: 410, y: 182, w: 15, h: 15},
-                     {x: 374, y: 245, w: 15, h: 15},
-                     {x: 347, y: 120, w: 15, h: 15},    
-  ];
-
-  coins_level_8 = [];
-
-  coins = [coins_level_1, coins_level_2, coins_level_3,coins_level_4,coins_level_5,coins_level_6,coins_level_7,coins_level_8];
-  
-  walls = [{x: 0, y: 0, w: 480, h: 100},
-           {x: 0, y: 270, w: 480, h: 100}];
-
-  endzones = [{x: 0, y: 100, w: 50, h: 167},
-              {x: 431, y: 100, w: 50, h: 167}];
-
-  time = 0;
-  time_tenth = 0;
-  time_hundredth = 0;
-
-  setInterval(add_time,1000);
-  setInterval(add_time_tenth,100);
-  setInterval(add_time_hundredth,10);
-
-  // setInterval(reset_time_tenth,1000);
-  // setInterval(reset_time_hundredth,100);
-
-  for (i = 0; i < 60; i++) {
-    do_opacity();
-  }
-}
-
 function add_time () {
   if (!game_won) {
     time += 1;
@@ -310,11 +101,10 @@ function draw () {
   noStroke();
 
   if (!game_won) {
-    draw_endzones();
+		draw_background();
     do_player();
     do_coins();
     do_enemy();
-    draw_walls();
     draw_text();
     do_time();
     do_tutorial();
@@ -373,19 +163,19 @@ function do_enemy () {
       each_enemy.x += each_enemy.x_vl;
       each_enemy.y += each_enemy.y_vl;
 
-      if (each_enemy.x < 56 && each_enemy.y < 106) {
+      if (each_enemy.x < 66 && each_enemy.y < 106) {
         move_obj(each_enemy,397,230,100);
       }
-      if (each_enemy.x > 396 && each_enemy.y > 229) {
+      if (each_enemy.x > 384 && each_enemy.y > 229) {
         move_obj(each_enemy,55,105,100);
       }
-      if (each_enemy.x > 396 && each_enemy.y < 106) {
+      if (each_enemy.x > 384 && each_enemy.y < 106) {
         move_obj(each_enemy,55,230,100);
       }
-      if (each_enemy.x < 56 && each_enemy.y > 229) {
+      if (each_enemy.x < 66 && each_enemy.y > 229) {
         move_obj(each_enemy,397,105,100);
       }
-    }
+		}
   //Level 4
   } else if (current_level == 4) {
     for (var each_enemy of enemies_level_4) {
@@ -398,20 +188,20 @@ function do_enemy () {
         each_enemy.x += each_enemy.vl;
       }
 
-      if (each_enemy.x > 395 && each_enemy.y == 105) {
+      if (each_enemy.x > 385 && each_enemy.y == 105) {
         each_enemy.or = "vert";
-        each_enemy.x = 395;
+        each_enemy.x = 385;
       }
-      if (each_enemy.x == 395 && each_enemy.y > 230) {
+      if (each_enemy.x == 385 && each_enemy.y > 225) {
         each_enemy.or = "hor";
-        each_enemy.y = 230;
+        each_enemy.y = 225;
         each_enemy.vl *= -1;
       }
-      if (each_enemy.x < 55 && each_enemy.y == 230) {
+      if (each_enemy.x < 65 && each_enemy.y == 225) {
         each_enemy.or = "vert";
-        each_enemy.x = 55;
+        each_enemy.x = 65;
       }
-      if (each_enemy.x == 55 && each_enemy.y < 105) {
+      if (each_enemy.x == 65 && each_enemy.y < 105) {
         each_enemy.or = "hor";
         each_enemy.y = 105;
         each_enemy.vl *= -1;
@@ -507,7 +297,7 @@ function do_player () {
   if (player.y < 100) {
     player.y += 3;
   }
-  if (player.y > 270-player.h) {
+  if (player.y > 260-player.h) {
     player.y -= 3;
   }
   if (player.x < 0) {
@@ -575,23 +365,8 @@ function do_tutorial () {
   }
 }
 
-function draw_walls () {
-  fill(0);
-  for (each_wall of walls) {
-    rect(each_wall.x, each_wall.y, each_wall.w, each_wall.h);
-  }
-}
-
-function draw_endzones () {
-  for (each_endzone of endzones) {
-    fill(114,255,184);
-    rect(each_endzone.x, each_endzone.y, each_endzone.w, each_endzone.h);
-  }
-}
-
 function do_coins () {
-  ellipseMode(CENTER);
-  // if (current_level == 1) {
+  ellipseMode(CORNER);
 		for (var i = 0; i < 7; i++) {
 			if (current_level == i+1) {
 				for (each_coin of coins[i]) {
@@ -609,91 +384,6 @@ function do_coins () {
 				}
 			}
 		}
-  /*} else if (current_level == 2) {
-    for (each_coin of coins_level_2) {
-      if (!each_coin.collected) {
-        fill(255,255,0);
-        ellipse(each_coin.x, each_coin.y, each_coin.w, each_coin.h);
-      }
-
-      if (collision(each_coin, player)) {
-        each_coin.collected = true;
-				coin_sound_effect.play();
-        collected_coins += 1;
-        each_coin.y += 500;
-      }
-    }
-  } else if (current_level == 3) {
-    for (each_coin of coins_level_3) {
-      if (!each_coin.collected) {
-        fill(255,255,0);
-        ellipse(each_coin.x, each_coin.y, each_coin.w, each_coin.h);
-      }
-
-      if (collision(each_coin, player)) {
-        each_coin.collected = true;
-				coin_sound_effect.play();
-        collected_coins += 1;
-        each_coin.y += 500;
-      }
-    }
-  } else if (current_level == 4) {
-    for (each_coin of coins_level_4) {
-      if (!each_coin.collected) {
-        fill(255,255,0);
-        ellipse(each_coin.x, each_coin.y, each_coin.w, each_coin.h);
-      }
-
-      if (collision(each_coin, player)) {
-        each_coin.collected = true;
-				coin_sound_effect.play();
-        collected_coins += 1;
-        each_coin.y += 500;
-      }
-    }
-  }  else if (current_level == 5) {
-    for (each_coin of coins_level_5) {
-      if (!each_coin.collected) {
-        fill(255,255,0);
-        ellipse(each_coin.x, each_coin.y, each_coin.w, each_coin.h);
-      }
-
-      if (collision(each_coin, player)) {
-        each_coin.collected = true;
-				coin_sound_effect.play();
-        collected_coins += 1;
-        each_coin.y += 500;
-      }
-    }
-  } else if (current_level == 6) {
-    for (each_coin of coins_level_6) {
-      if (!each_coin.collected) {
-        fill(255,255,0);
-        ellipse(each_coin.x, each_coin.y, each_coin.w, each_coin.h);
-      }
-
-      if (collision(each_coin, player)) {
-        each_coin.collected = true;
-				coin_sound_effect.play();
-        collected_coins += 1;
-        each_coin.y += 500;
-      }
-    }
-  }  else if (current_level == 7) {
-    for (each_coin of coins_level_7) {
-      if (!each_coin.collected) {
-        fill(255,255,0);
-        ellipse(each_coin.x, each_coin.y, each_coin.w, each_coin.h);
-      }
-
-      if (collision(each_coin, player)) {
-        each_coin.collected = true;
-				coin_sound_effect.play();
-        collected_coins += 1;
-        each_coin.y += 500;
-      }
-    }
-  }*/
 }
 
 function restart_game () {
